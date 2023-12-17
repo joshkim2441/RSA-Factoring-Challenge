@@ -1,17 +1,25 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "factors.h"
 
-/*function to find a factor of a number*/
-int find_factor(int n)
+/**
+ * function to find the factor of a number
+ * @buff: a pointer to the number address
+*/
+int find_factor(char *buff)
 {
-	for (int i = 2; i * i <= n; i++)
+	u_int32_t digit;
+	u_int32_t j;
+
+	digit = atoi(buff);
+
+	for (j = 2; j < digit; j++)
 	{
-		if (n % i == 0)
+		if (digit % j == 0)
 		{
-			return (i);
+			printf("%d=%d*%d\n",digit,digit/j,j);
+			break;
 		}
 	}
-	return (n);
+	return (0);
 }
 
 /**
@@ -22,27 +30,27 @@ int find_factor(int n)
 */
 int main(int argc, char *argv[])
 {
+	FILE *file;
+	char *buff = NULL;
+	size_t counter;
+	ssize_t ln;
+
 	if (argc != 2)
 	{
-		printf("Usage: factors <file>\n");
-		return (1);
+		fprintf(stderr, "Usage: factors <file>\n");
+		exit(EXIT_FAILURE);
 	}
 
-	FILE *file = fopen(argv[1], "r");
+	file = fopen(argv[1], "r");
 	if (file == NULL)
 	{
-		printf("Could not open file %s\n", argv[1]);
-		return (1);
+		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
 	}
 
-	int n;
-	while (fscanf(file, "%d", &n) == 1)
+	while ((ln = getline(&buff, &counter, file)) != -1)
 	{
-		int p = find_factor(n);
-		int q = n / p;
-		printf("%d=%d*%d\n", n, p, q);
+		find_factor(buff);
 	}
-
-	fclose(file);
 	return (0);
 }
