@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+import sys
+import time
+import threading
+
+def factorize(num):
+    for i in range(2, int(num**0.5)+1):
+        if num % i == 0:
+            return (i, num//i)
+    return None
+
+def process_file(input_file):
+    try:
+        with open(input_file, 'r') as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print("File not found")
+        return
+
+    for line in lines:
+        num = int(line.strip())
+        factors = factorize(num)
+        if factors:
+            print(f"{num}={factors[0]}*{factors[1]}")
+        """if time.time() - start_time > 5:
+            break
+            """
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        exit()
+
+    input_file = sys.argv[1]
+
+"""Create a thread to run the factorization"""
+thread = threading.Thread(target=process_file, args=(input_file,))
+
+"""Start the thread"""
+thread.start()
+
+"""Wait for 5 seconds"""
+thread.join(timeout=5)
+
+"""If thread is still active it has exceeded the time limit"""
+if thread.is_alive():
+    print("Time limit exceeded")
+    thread._stop()
