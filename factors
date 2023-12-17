@@ -24,6 +24,8 @@ def process_file(input_file):
         factors = factorize(num)
         if factors:
             print(f"{num}={factors[0]}*{factors[1]}")
+        if time.time() - start_time > 5:
+            break
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
