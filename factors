@@ -1,32 +1,35 @@
-#!/usr/bin/env python3
-
+#!/usr/bin/python3
 from sys import argv
-from math import sqrt
-"""Facorization numbers"""
-"""Read file"""
-def fopen_read(file):
-    with open(file, "r", encoding="utf-8") as file:
-        """Add to array"""
-        lines = file.readlines()
-    factor_number = []
-    for line in lines:
-        factor_number.append(int(line))
-    return factor_number
+import math
 
 
-def search_and_count(n):
-    """Factor every n given"""
-    for j in range(1, n):
-        if n == ((n // j) * j):
-            print("{}={}*{}".format(n, (n // j), j))
-            break
+def factor_nums(num):
+    """obtain the factors of a number"""
+    if num % 2 == 0:
+        j = 2
+        print("{}={}*{}".format(num, int(num//j), j))
+    else:
+        sq = int(math.sqrt(num)) + 1
+        for j in range(3, sq, +2):
+            if num % j == 0:
+                print("{}={}*{}".format(num, int(num//j), j))
+                return
+            if num % (sq + j) == 0:
+                print("{}={}*{}".format(num, sq + j, int(num//(sq + j))))
+                return
+            if num % (sq - j) == 0:
+                print("{}={}*{}".format(num, sq - 1, int(num//(sq - j))))
+                return
 
 
-def factor_list(ls):
+def rsafactor(file):
+    """read the file and print"""
 
-    for j in ls:
-        search_and_count(j)
+    with open(file, encoding="utf-8") as file_name:
+        for j in file_name.readlines():
+            n = int(j)
+            result = factor_nums(n)
 
 
-if len(argv) == 2:
-    factor_list(fopen_read(argv[1]))
+if __name__ == "__main__":
+    rsafactor(argv[1])
