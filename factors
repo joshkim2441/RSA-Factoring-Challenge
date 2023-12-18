@@ -1,49 +1,32 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
-import sys
-import time
-import threading
-
-def factorize(num):
-    for i in range(2, int(num**0.5)+1):
-        if num % i == 0:
-            return (i, num//i)
-    return None
-
-def process_file(input_file):
-    try:
-        with open(input_file, 'r') as f:
-            lines = f.readlines()
-    except FileNotFoundError:
-        print("File not found")
-        return
-
+from sys import argv
+from math import sqrt
+"""Facorization numbers"""
+"""Read file"""
+def fopen_read(file):
+    with open(file, "r", encoding="utf-8") as file:
+        """Add to array"""
+        lines = file.readlines()
+    factor_number = []
     for line in lines:
-        num = int(line.strip())
-        factors = factorize(num)
-        if factors:
-            print(f"{num}={factors[0]}*{factors[1]}")
-        """if time.time() - start_time > 5:
+        factor_number.append(int(line))
+    return factor_number
+
+
+def search_and_count(n):
+    """Factor every n given"""
+    for j in range(1, n):
+        if n == ((n // j) * j):
+            print("{}={}*{}".format(n, (n // j), j))
             break
-            """
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        exit()
 
-    input_file = sys.argv[1]
+def factor_list(ls):
 
-"""Create a thread to run the factorization"""
-thread = threading.Thread(target=process_file, args=(input_file,))
+    for j in ls:
+        search_and_count(j)
 
-"""Start the thread"""
-thread.start()
 
-"""Wait for 5 seconds"""
-thread.join(timeout=5)
-
-"""If thread is still active it has exceeded the time limit"""
-if thread.is_alive():
-    print("Time limit exceeded")
-    thread._stop()
+if len(argv) == 2:
+    factor_list(fopen_read(argv[1]))
