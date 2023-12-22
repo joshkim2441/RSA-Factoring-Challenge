@@ -1,32 +1,10 @@
-#!/usr/bin/env python3
-""" Factor numbers """
-from sys import argv
-from math import sqrt
+#!/usr/bin/env bash
+# Read number from file and print his factors in file
 
+FILE=$1
 
-def fopen_read(files):
-    """read from file"""
-    with open(files, "r", encoding="utf-8") as file:
-        lines = file.readlines()
-    factor_number = []
-    for line in lines:
-        factor_number.append(int(line))
-    return factor_number
-
-
-def search_and_count(n):
-    """factor each given n"""
-    for i in range(1, n):
-        if n == ((n // i) * i):
-            print("{}={}*{}".format(n, (n // i), i))
-            break
-
-
-def factor_list(ls):
-    """factor each num"""
-    for i in ls:
-        search_and_count(i)
-
-
-if len(argv) == 2:
-    factor_list(fopen_read(argv[1]))
+while read NUM
+do
+    factors=($(factor $NUM))
+    echo "$NUM=$(($NUM/${factors[1]}))*${factors[1]}"
+done < $FILE
